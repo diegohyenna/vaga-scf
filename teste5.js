@@ -1,9 +1,13 @@
+const data = require("./fakeData");
 
+module.exports = function (req, res) {
+  const name = req.query.name;
 
-module.exports = function(req, res){
-    
-    var name =  req.query.name;
+  if (!name) return res.status(400).send("Falta o parametro name");
 
-    res.send("Usuário " +  name  + "  foi lido 0 vezes.");
+  const user = data.find((user) => user.name === name);
 
+  if (!user) return res.status(404).send("O usuário não existe!");
+
+  return res.send(`Usuário ${name} foi lido ${user?.count || 0} vezes.`);
 };

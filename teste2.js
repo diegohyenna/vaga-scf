@@ -1,17 +1,21 @@
-var data =  require("./fakeData");
+var data = require("./fakeData");
 
-module.exports = function(req, res){
-  
-    var name =  req.body.name;
-    var jov =  req.body.job;
-    
-    var newUser = {
-        name: name,
-        job: job,
-    }
+module.exports = function (req, res) {
+  const name = req.body.name;
+  const job = req.body.job;
 
-    data.push(newUser)
-    
-    res.send(newUser);
+  if (!name) return res.status(400).send("Falta o parametro name");
+  if (!job) return res.status(400).send("Falta o parametro job");
 
+  const id = data.at(-1).id + 1;
+
+  const newUser = {
+    id,
+    name,
+    job,
+  };
+
+  data.push(newUser);
+
+  return res.send(newUser);
 };

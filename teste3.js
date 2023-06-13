@@ -1,15 +1,16 @@
-var data =  require("./fakeData");
+var data = require("./fakeData");
 
-module.exports = function(req, res) {
-  
-    var name =  req.query.name;
+module.exports = function (req, res) {
+  const name = req.query.name;
 
-    for(let i = 0; i < data.length;  i++) {
-        if(i.name == name) {
-            data[i] = null;
-        }
+  if (!name) return res.status(400).send("Falta o parametro name");
+
+  data.forEach((user, index) => {
+    if (user.name === name) {
+      data.splice(index, 1);
+      return res.send("success");
     }
+  });
 
-    res.send("success");
-
+  return res.status(404).send("usuário não encontrado!");
 };
